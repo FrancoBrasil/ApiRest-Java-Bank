@@ -12,12 +12,14 @@ public class ContaDTO {
 	private Byte agencia;
 	private Byte numero;
 	private Tipo tipo;
+	private double saldo;
 	
 	public ContaDTO(Conta conta) {
 		id = conta.getId();
 		agencia = conta.getAgencia();
 		numero = conta.getNumero();
 		tipo = conta.getTipo();
+		saldo = conta.getSaldo();
 	}
 
 	public Long getId() {
@@ -50,6 +52,14 @@ public class ContaDTO {
 	
 	public void setTipo(Tipo tipo) {
 		this.tipo = tipo;
+	}
+	
+	public double getSaldo() {
+		return saldo;
+	}
+	
+	public void setSaldo(double saldo) {
+		this.saldo = saldo;
 	}
 
 	public static List<ContaDTO> converter(List<Conta> contas) {

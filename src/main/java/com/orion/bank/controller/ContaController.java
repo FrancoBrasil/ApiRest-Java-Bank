@@ -19,9 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.orion.bank.controller.dto.ContaDTO;
-import com.orion.bank.controller.dto.ContaTransacoesFormDTO;
 import com.orion.bank.controller.dto.ContaDetalharDTO;
 import com.orion.bank.controller.dto.ContaFormDTO;
+import com.orion.bank.controller.dto.ContaTranferenciaFormDTO;
+import com.orion.bank.controller.dto.ContaTransacoesFormDTO;
 import com.orion.bank.model.Conta;
 import com.orion.bank.repository.ClienteRepository;
 import com.orion.bank.repository.ContaRepository;
@@ -43,6 +44,7 @@ public class ContaController {
 	}
 	
 	@PostMapping
+	@Transactional
 	public ResponseEntity<ContaDTO> cadastar(@RequestBody @Valid ContaFormDTO form,
 			UriComponentsBuilder uriBuilder) {
 		Conta conta = form.converter(clienteRepository);
@@ -65,7 +67,7 @@ public class ContaController {
 	@PutMapping("/depositar/{id}")
 	@Transactional
 	public ResponseEntity<ContaDTO> depositar(@PathVariable Long id, 
-			@RequestBody ContaTransacoesFormDTO form) {
+			@RequestBody @Valid ContaTransacoesFormDTO form) {
 		Optional<Conta> optional = contaRepository.findById(id);
 		if (optional.isPresent()) {
 			Conta conta = form.depositar(id, contaRepository);
@@ -77,10 +79,22 @@ public class ContaController {
 	@PutMapping("/sacar/{id}")
 	@Transactional
 	public ResponseEntity<ContaDTO> sacar(@PathVariable Long id, 
-			@RequestBody ContaTransacoesFormDTO form) {
+			@RequestBody @Valid ContaTransacoesFormDTO form) {
 		Optional<Conta> optional = contaRepository.findById(id);
 		if (optional.isPresent()) {
 			Conta conta = form.sacar(id, contaRepository);
+			return ResponseEntity.ok(new ContaDTO(conta));
+		}
+		return ResponseEntity.notFound().build();
+	}
+	
+	@PutMapping("/tranferir/{id}")
+	@Transactional
+	public ResponseEntity<ContaDTO> transferir(@PathVariable Long id, 
+			@RequestBody @Valid ContaTranferenciaFormDTO form) {
+		Optional<Conta> optional = contaRepository.findById(id);
+		if (optional.isPresent()) {
+			Conta conta = form.transferir(id, contaRepository);
 			return ResponseEntity.ok(new ContaDTO(conta));
 		}
 		return ResponseEntity.notFound().build();

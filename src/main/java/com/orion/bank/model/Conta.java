@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Conta {
@@ -27,16 +28,25 @@ public class Conta {
 	private Tipo tipo;
 	protected Double saldo = 0.0;
 	private Boolean isAtiva = true;
-	private Double valor = 0.0;
-
+	private Double valor;
+	
+	@OneToOne
+	private Conta contaDestino;
+	
 	@ManyToOne
 	private Cliente cliente;
-	
-	public Conta() {}
-	
+
+	public Conta() {
+	}
+
 	public Conta(Tipo tipo, Cliente cliente) {
 		this.tipo = tipo;
 		this.cliente = cliente;
+	}
+	
+	public Conta(Double valor, Conta contaDestino) {
+		this.valor = valor;
+		this.contaDestino = contaDestino;
 	}
 
 	public Long getId() {
@@ -98,17 +108,25 @@ public class Conta {
 	public Double getSaldo() {
 		return saldo;
 	}
-	
+
 	public void setSaldo(Double saldo) {
 		this.saldo = saldo;
 	}
-	
+
 	public Double getValor() {
 		return valor;
 	}
-	
+
 	public void setValor(Double valor) {
 		this.valor = valor;
+	}
+	
+	public Conta getContaDestino() {
+		return contaDestino;
+	}
+
+	public void setContaDestino(Conta contaDestino) {
+		this.contaDestino = contaDestino;
 	}
 
 	@Override
@@ -154,4 +172,7 @@ public class Conta {
 		}
 		return r;
 	}
+
+	
+
 }

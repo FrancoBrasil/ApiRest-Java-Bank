@@ -1,11 +1,14 @@
 package com.orion.bank.controller.dto;
 
+import javax.validation.constraints.NotNull;
+
 import com.orion.bank.model.Conta;
 import com.orion.bank.repository.ContaRepository;
 
 public class ContaTransacoesFormDTO {
-
-	private double valor;
+	
+	@NotNull
+	private Double valor;
 
 	public ContaTransacoesFormDTO() {
 	}
@@ -28,8 +31,10 @@ public class ContaTransacoesFormDTO {
 	public Conta sacar(Long id, ContaRepository repository) {
 		Conta conta = repository.getOne(id);
 		double saldo = conta.getSaldo();
+		if (this.valor > saldo) {
+			throw new RuntimeException("Saldo Insuficiente!");
+		}
 		conta.setSaldo(saldo - this.valor);
 		return conta;
 	}
-
 }
