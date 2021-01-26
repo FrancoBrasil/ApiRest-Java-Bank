@@ -1,13 +1,16 @@
 package com.orion.bank.controller;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,8 +41,11 @@ public class ContaController {
 	private ClienteRepository clienteRepository;
 	
 	@GetMapping
-	public List<ContaDTO> lista() {
-		List<Conta> contas = contaRepository.findAll();
+	public Page<ContaDTO> lista(@PageableDefault(sort = "agencia", direction = Direction.ASC) Pageable paginacao) {
+		
+		// Pageable paginacao = PageRequest.of(pagina, qtde, Direction.ASC, ordenacao);
+		
+		Page<Conta> contas = contaRepository.findAll(paginacao);
 		return ContaDTO.converter(contas);
 	}
 	
@@ -88,7 +94,7 @@ public class ContaController {
 		return ResponseEntity.notFound().build();
 	}
 	
-	@PutMapping("/tranferir/{id}")
+	@PutMapping("/transferir/{id}")
 	@Transactional
 	public ResponseEntity<ContaDTO> transferir(@PathVariable Long id, 
 			@RequestBody @Valid ContaTranferenciaFormDTO form) {

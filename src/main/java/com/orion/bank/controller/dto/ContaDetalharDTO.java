@@ -12,6 +12,7 @@ public class ContaDetalharDTO {
 	private Byte agencia;
 	private Byte numero;
 	private Tipo tipo;
+	private Double saldo;
 	private String cliente;
 	
 	public ContaDetalharDTO(Conta conta) {
@@ -19,6 +20,7 @@ public class ContaDetalharDTO {
 		agencia = conta.getAgencia();
 		numero = conta.getNumero();
 		tipo = conta.getTipo();
+		saldo = conta.getSaldo();
 		cliente = conta.getCliente().getNome();
 	}
 
@@ -60,6 +62,10 @@ public class ContaDetalharDTO {
 	
 	public void setCliente(String cliente) {
 		this.cliente = cliente;
+	}
+	
+	public Double getSaldo() {
+		return saldo;
 	}
 
 	public static List<ContaDetalharDTO> converter(List<Conta> contas) {

@@ -1,7 +1,6 @@
 package com.orion.bank.controller.dto;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
 
 import com.orion.bank.model.Conta;
 import com.orion.bank.model.Tipo;
@@ -62,8 +61,8 @@ public class ContaDTO {
 		this.saldo = saldo;
 	}
 
-	public static List<ContaDTO> converter(List<Conta> contas) {
-		return contas.stream().map(ContaDTO::new).collect(Collectors.toList());
+	public static Page<ContaDTO> converter(Page<Conta> contas) {
+		return contas.map(ContaDTO::new);
 	}
 	
 }

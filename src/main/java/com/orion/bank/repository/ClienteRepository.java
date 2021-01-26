@@ -1,14 +1,15 @@
 package com.orion.bank.repository;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.orion.bank.model.Cliente;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Long>{
 	
-	List<Cliente> findByCpf(Long cpf);
+	Page<Cliente> findByCpf(Long cpf, Pageable paginacao);
+	Page<Cliente> findByNome(String nome, Pageable paginacao);
 	Cliente findByNome(String nome);
 	
 	/*

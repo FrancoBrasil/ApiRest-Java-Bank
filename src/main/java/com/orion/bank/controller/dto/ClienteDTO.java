@@ -1,7 +1,6 @@
 package com.orion.bank.controller.dto;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
 
 import com.orion.bank.model.Cliente;
 
@@ -25,8 +24,8 @@ public class ClienteDTO {
 		return nome;
 	}
 
-	public static List<ClienteDTO> converter(List<Cliente> clientes) {
-		return clientes.stream().map(ClienteDTO::new).collect(Collectors.toList());
+	public static Page<ClienteDTO> converter(Page<Cliente> clientes) {
+		return clientes.map(ClienteDTO::new);
 	}
 
 }

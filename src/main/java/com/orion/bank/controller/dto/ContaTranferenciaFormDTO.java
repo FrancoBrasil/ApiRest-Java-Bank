@@ -1,7 +1,5 @@
 package com.orion.bank.controller.dto;
 
-import java.util.Optional;
-
 import javax.validation.constraints.NotNull;
 
 import com.orion.bank.model.Conta;
@@ -50,13 +48,5 @@ public class ContaTranferenciaFormDTO {
 		double saldoDestino = contaDestino.getSaldo();
 		contaDestino.setSaldo(this.valor + saldoDestino);
 		return contaOrigem;
-	}
-	
-	public Conta converter(ContaRepository repository) {
-		Optional<Conta> contas = repository.findById(contaDestino);
-		if (contas.isPresent()) {
-			return new Conta(valor, contas.get());
-		}
-		throw new RuntimeException("Id Inexistente!");
 	}
 }
