@@ -27,7 +27,7 @@ public class Conta {
 	private Tipo tipo;
 	protected Double saldo = 0.0;
 	private Boolean isAtiva = true;
-	private Double valorDeposito = 0.0;
+	private Double valor = 0.0;
 
 	@ManyToOne
 	private Cliente cliente;
@@ -103,12 +103,12 @@ public class Conta {
 		this.saldo = saldo;
 	}
 	
-	public Double getValorDeposito() {
-		return valorDeposito;
+	public Double getValor() {
+		return valor;
 	}
 	
-	public void setValorDeposito(Double valorDeposito) {
-		this.valorDeposito = valorDeposito;
+	public void setValor(Double valor) {
+		this.valor = valor;
 	}
 
 	@Override
@@ -153,10 +153,5 @@ public class Conta {
 			return (byte) (r * (-1));
 		}
 		return r;
-	}
-	
-	public void depositar() {
-		this.saldo += this.valorDeposito;
-		this.valorDeposito = 0.0;
 	}
 }

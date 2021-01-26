@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.orion.bank.controller.dto.ContaDTO;
-import com.orion.bank.controller.dto.ContaDepositarFormDTO;
+import com.orion.bank.controller.dto.ContaTransacoesFormDTO;
 import com.orion.bank.controller.dto.ContaDetalharDTO;
 import com.orion.bank.controller.dto.ContaFormDTO;
 import com.orion.bank.model.Conta;
@@ -62,13 +62,25 @@ public class ContaController {
 		return ResponseEntity.notFound().build();
 	}
 	
-	@PutMapping("/{id}")
+	@PutMapping("/depositar/{id}")
 	@Transactional
-	public ResponseEntity<ContaDTO> atualizar(@PathVariable Long id, 
-			@RequestBody ContaDepositarFormDTO form) {
+	public ResponseEntity<ContaDTO> depositar(@PathVariable Long id, 
+			@RequestBody ContaTransacoesFormDTO form) {
 		Optional<Conta> optional = contaRepository.findById(id);
 		if (optional.isPresent()) {
-			Conta conta = form.atualizar(id, contaRepository);
+			Conta conta = form.depositar(id, contaRepository);
+			return ResponseEntity.ok(new ContaDTO(conta));
+		}
+		return ResponseEntity.notFound().build();
+	}
+	
+	@PutMapping("/sacar/{id}")
+	@Transactional
+	public ResponseEntity<ContaDTO> sacar(@PathVariable Long id, 
+			@RequestBody ContaTransacoesFormDTO form) {
+		Optional<Conta> optional = contaRepository.findById(id);
+		if (optional.isPresent()) {
+			Conta conta = form.sacar(id, contaRepository);
 			return ResponseEntity.ok(new ContaDTO(conta));
 		}
 		return ResponseEntity.notFound().build();
