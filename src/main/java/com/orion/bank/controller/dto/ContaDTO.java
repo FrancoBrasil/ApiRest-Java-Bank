@@ -12,6 +12,7 @@ public class ContaDTO {
 	private Byte numero;
 	private Tipo tipo;
 	private double saldo;
+	private double chequeEspecial;
 	
 	public ContaDTO(Conta conta) {
 		id = conta.getId();
@@ -19,8 +20,16 @@ public class ContaDTO {
 		numero = conta.getNumero();
 		tipo = conta.getTipo();
 		saldo = conta.getSaldo();
+		chequeEspecial = conta.getChequeEspecial();
 	}
-
+	public double getChequeEspecial() {
+		return chequeEspecial;
+	}
+	
+	public void setChequeEspecial(double chequeEspecial) {
+		this.chequeEspecial = chequeEspecial;
+	}
+	
 	public Long getId() {
 		return id;
 	}

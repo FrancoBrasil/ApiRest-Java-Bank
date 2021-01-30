@@ -1,6 +1,7 @@
 package com.orion.bank.controller;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,8 +29,10 @@ import com.orion.bank.controller.dto.ContaFormDTO;
 import com.orion.bank.controller.dto.ContaTranferenciaFormDTO;
 import com.orion.bank.controller.dto.ContaTransacoesFormDTO;
 import com.orion.bank.model.Conta;
+import com.orion.bank.model.TransacoesConta;
 import com.orion.bank.repository.ClienteRepository;
 import com.orion.bank.repository.ContaRepository;
+import com.orion.bank.repository.TransacoesContaRepository;
 
 @RestController
 @RequestMapping("/contas")
@@ -39,6 +43,9 @@ public class ContaController {
 	
 	@Autowired
 	private ClienteRepository clienteRepository;
+	
+	@Autowired
+	private TransacoesContaRepository transacoesRepository;
 	
 	@GetMapping
 	public Page<ContaDTO> lista(@PageableDefault(sort = "agencia", direction = Direction.ASC) Pageable paginacao) {
@@ -77,6 +84,12 @@ public class ContaController {
 		Optional<Conta> optional = contaRepository.findById(id);
 		if (optional.isPresent()) {
 			Conta conta = form.depositar(id, contaRepository);
+			TransacoesConta t = new TransacoesConta();
+			t.setData(LocalDateTime.now());
+			t.setTipo("Depósito");
+			t.setValor(form.getValor());
+			t.setConta(conta);
+			transacoesRepository.save(t);
 			return ResponseEntity.ok(new ContaDTO(conta));
 		}
 		return ResponseEntity.notFound().build();
@@ -89,6 +102,12 @@ public class ContaController {
 		Optional<Conta> optional = contaRepository.findById(id);
 		if (optional.isPresent()) {
 			Conta conta = form.sacar(id, contaRepository);
+			TransacoesConta t = new TransacoesConta();
+			t.setData(LocalDateTime.now());
+			t.setTipo("Saque");
+			t.setValor(form.getValor());
+			t.setConta(conta);
+			transacoesRepository.save(t);
 			return ResponseEntity.ok(new ContaDTO(conta));
 		}
 		return ResponseEntity.notFound().build();
@@ -101,7 +120,24 @@ public class ContaController {
 		Optional<Conta> optional = contaRepository.findById(id);
 		if (optional.isPresent()) {
 			Conta conta = form.transferir(id, contaRepository);
+			TransacoesConta t = new TransacoesConta();
+			t.setData(LocalDateTime.now());
+			t.setTipo("Transferência");
+			t.setValor(form.getValor());
+			t.setConta(conta);
+			transacoesRepository.save(t);
 			return ResponseEntity.ok(new ContaDTO(conta));
+		}
+		return ResponseEntity.notFound().build();
+	}
+	
+	@DeleteMapping("/{id}")
+	@Transactional
+	public ResponseEntity<Void> deletar(@PathVariable Long id) {
+		Optional<Conta> contas = contaRepository.findById(id);
+		if(contas.isPresent()) {
+			contaRepository.deleteById(id);
+			return ResponseEntity.ok().build();
 		}
 		return ResponseEntity.notFound().build();
 	}

@@ -2,12 +2,9 @@ package com.orion.bank.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.orion.bank.model.Conta;
 import com.orion.bank.model.TransacoesConta;
 
-public interface ContaRepository extends JpaRepository<Conta, Long>{
-
-	void save(TransacoesConta t);
+public interface TransacoesContaRepository extends JpaRepository<TransacoesConta, Long>{
 	
 	
 	

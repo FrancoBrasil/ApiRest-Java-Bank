@@ -1,15 +1,19 @@
 package com.orion.bank.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -29,12 +33,16 @@ public class Conta {
 	protected Double saldo = 0.0;
 	private Boolean isAtiva = true;
 	private Double valor;
-	
+	private Double chequeEspecial = 0.0;
+
 	@OneToOne
 	private Conta contaDestino;
-	
+
 	@ManyToOne
 	private Cliente cliente;
+
+	@OneToMany(mappedBy = "conta", fetch = FetchType.EAGER)
+	private List<TransacoesConta> transacoesConta = new ArrayList<>();
 
 	public Conta() {
 	}
@@ -42,8 +50,12 @@ public class Conta {
 	public Conta(Tipo tipo, Cliente cliente) {
 		this.tipo = tipo;
 		this.cliente = cliente;
+		if (this.tipo.equals(Tipo.CONTA_CORRENTE)) {
+			this.chequeEspecial = 1000.0;
+		}
+
 	}
-	
+
 	public Conta(Double valor, Conta contaDestino) {
 		this.valor = valor;
 		this.contaDestino = contaDestino;
@@ -120,13 +132,29 @@ public class Conta {
 	public void setValor(Double valor) {
 		this.valor = valor;
 	}
-	
+
 	public Conta getContaDestino() {
 		return contaDestino;
 	}
 
 	public void setContaDestino(Conta contaDestino) {
 		this.contaDestino = contaDestino;
+	}
+
+	public Double getChequeEspecial() {
+		return chequeEspecial;
+	}
+
+	public void setChequeEspecial(Double chequeEspecial) {
+		this.chequeEspecial = chequeEspecial;
+	}
+	
+	public List<TransacoesConta> getTransacoesConta() {
+		return transacoesConta;
+	}
+	
+	public void setTransacoesConta(List<TransacoesConta> transacoesConta) {
+		this.transacoesConta = transacoesConta;
 	}
 
 	@Override
@@ -172,7 +200,5 @@ public class Conta {
 		}
 		return r;
 	}
-
-	
 
 }

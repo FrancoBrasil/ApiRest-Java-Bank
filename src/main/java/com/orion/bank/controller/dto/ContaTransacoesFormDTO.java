@@ -31,7 +31,8 @@ public class ContaTransacoesFormDTO {
 	public Conta sacar(Long id, ContaRepository repository) {
 		Conta conta = repository.getOne(id);
 		double saldo = conta.getSaldo();
-		if (this.valor > saldo) {
+		double chequeEspecial = conta.getChequeEspecial();
+		if (this.valor > saldo + chequeEspecial) {
 			throw new RuntimeException("Saldo Insuficiente!");
 		}
 		conta.setSaldo(saldo - this.valor);
