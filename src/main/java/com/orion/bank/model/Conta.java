@@ -1,6 +1,6 @@
 package com.orion.bank.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -16,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 public class Conta {
 
@@ -24,8 +26,9 @@ public class Conta {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	private LocalDateTime dataAbertura = LocalDateTime.now();
+	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate date = LocalDate.now();
 	private Byte agencia = geradorDeAgencia();
 	private Byte numero = geradorDeNumero();
 	@Enumerated(EnumType.STRING)
@@ -69,12 +72,12 @@ public class Conta {
 		this.id = id;
 	}
 
-	public LocalDateTime getDataAbertura() {
-		return dataAbertura;
+	public LocalDate getDate() {
+		return date;
 	}
 
-	public void setDataAbertura(LocalDateTime dataAbertura) {
-		this.dataAbertura = dataAbertura;
+	public void setDate(LocalDate date) {
+		this.date = date;
 	}
 
 	public Byte getAgencia() {

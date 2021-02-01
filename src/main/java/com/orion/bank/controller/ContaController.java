@@ -1,7 +1,10 @@
 package com.orion.bank.controller;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -56,6 +59,20 @@ public class ContaController {
 		return ContaDTO.converter(contas);
 	}
 	
+	@GetMapping("/findByPeriod/{inicio}/{termino}")
+	public ResponseEntity<List<ContaDTO>> findByPeriod(@PathVariable String inicio, @PathVariable String termino) {
+		LocalDate dtInicio = LocalDate.parse(inicio, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		LocalDate dtFim = LocalDate.parse(termino, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		List<Conta> collection = contaRepository.findByPeriod(dtInicio, dtFim);
+		return ResponseEntity.ok().body(ContaDTO.converter(collection));
+	}
+	/*
+	@GetMapping(value = "/findByDate/{data}")
+	public ResponseEntity<List<Conta>> findByDate(@PathVariable String data) {
+		List<Conta> collection = contaRepository.findByDate(data);
+		return ResponseEntity.ok().body(collection);
+	}
+	*/
 	@PostMapping
 	@Transactional
 	public ResponseEntity<ContaDTO> cadastar(@RequestBody @Valid ContaFormDTO form,
@@ -141,4 +158,6 @@ public class ContaController {
 		}
 		return ResponseEntity.notFound().build();
 	}
+	
+	
 }
