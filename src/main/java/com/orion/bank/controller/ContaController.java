@@ -2,7 +2,6 @@ package com.orion.bank.controller;
 
 import java.net.URI;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -66,13 +65,7 @@ public class ContaController {
 		List<Conta> collection = contaRepository.findByPeriod(dtInicio, dtFim);
 		return ResponseEntity.ok().body(ContaDTO.converter(collection));
 	}
-	/*
-	@GetMapping(value = "/findByDate/{data}")
-	public ResponseEntity<List<Conta>> findByDate(@PathVariable String data) {
-		List<Conta> collection = contaRepository.findByDate(data);
-		return ResponseEntity.ok().body(collection);
-	}
-	*/
+	
 	@PostMapping
 	@Transactional
 	public ResponseEntity<ContaDTO> cadastar(@RequestBody @Valid ContaFormDTO form,
@@ -102,7 +95,7 @@ public class ContaController {
 		if (optional.isPresent()) {
 			Conta conta = form.depositar(id, contaRepository);
 			TransacoesConta t = new TransacoesConta();
-			t.setData(LocalDateTime.now());
+			t.setDate(LocalDate.now());
 			t.setTipo("Depósito");
 			t.setValor(form.getValor());
 			t.setConta(conta);
@@ -120,7 +113,7 @@ public class ContaController {
 		if (optional.isPresent()) {
 			Conta conta = form.sacar(id, contaRepository);
 			TransacoesConta t = new TransacoesConta();
-			t.setData(LocalDateTime.now());
+			t.setDate(LocalDate.now());
 			t.setTipo("Saque");
 			t.setValor(form.getValor());
 			t.setConta(conta);
@@ -138,7 +131,7 @@ public class ContaController {
 		if (optional.isPresent()) {
 			Conta conta = form.transferir(id, contaRepository);
 			TransacoesConta t = new TransacoesConta();
-			t.setData(LocalDateTime.now());
+			t.setDate(LocalDate.now());
 			t.setTipo("Transferência");
 			t.setValor(form.getValor());
 			t.setConta(conta);

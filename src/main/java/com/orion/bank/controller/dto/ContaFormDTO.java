@@ -13,7 +13,7 @@ public class ContaFormDTO {
 	private Tipo tipo;
 	
 	@NotNull
-	private String cliente;
+	private Long idCliente;
 
 	public Tipo getTipo() {
 		return tipo;
@@ -23,16 +23,16 @@ public class ContaFormDTO {
 		this.tipo = tipo;
 	}
 
-	public String getCliente() {
-		return cliente;
+	public Long getIdCliente() {
+		return idCliente;
 	}
 
-	public void setCliente(String cliente) {
-		this.cliente = cliente;
+	public void setIdCliente(Long idCliente) {
+		this.idCliente = idCliente;
 	}
 
 	public Conta converter(ClienteRepository repository) {
-		Cliente clientes = repository.findByNome(cliente);
+		Cliente clientes = repository.getOne(idCliente);
 		return new Conta(tipo, clientes);
 	}
 }

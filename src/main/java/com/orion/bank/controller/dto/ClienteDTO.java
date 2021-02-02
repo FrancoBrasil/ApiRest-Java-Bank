@@ -8,12 +8,15 @@ public class ClienteDTO {
 
 	private Long id;
 	private String nome;
-	
-	public ClienteDTO() {}
+	private String email;
+
+	public ClienteDTO() {
+	}
 
 	public ClienteDTO(Cliente cliente) {
 		id = cliente.getId();
 		nome = cliente.getNome();
+		email = cliente.getEmail();
 	}
 
 	public Long getId() {
@@ -22,6 +25,14 @@ public class ClienteDTO {
 
 	public String getNome() {
 		return nome;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public static Page<ClienteDTO> converter(Page<Cliente> clientes) {

@@ -1,6 +1,6 @@
 package com.orion.bank.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,13 +8,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 public class TransacoesConta {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private LocalDateTime data;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate date = LocalDate.now();
 	private String tipo;
 	private Double valor;
 	
@@ -25,7 +28,6 @@ public class TransacoesConta {
 	}
 
 	public TransacoesConta(String tipo, Double valor) {
-		this.data = LocalDateTime.now();
 		this.tipo = tipo;
 		this.valor = valor;
 	}
@@ -54,12 +56,12 @@ public class TransacoesConta {
 		this.valor = valor;
 	}
 
-	public LocalDateTime getData() {
-		return data;
+	public LocalDate getDate() {
+		return date;
 	}
 
-	public void setData(LocalDateTime data) {
-		this.data = data;
+	public void setDate(LocalDate date) {
+		this.date = date;
 	}
 	
 	public Conta getConta() {

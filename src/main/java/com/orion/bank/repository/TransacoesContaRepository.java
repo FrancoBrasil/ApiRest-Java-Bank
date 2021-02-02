@@ -1,11 +1,17 @@
 package com.orion.bank.repository;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import com.orion.bank.model.TransacoesConta;
 
 public interface TransacoesContaRepository extends JpaRepository<TransacoesConta, Long>{
 	
+	@Query("SELECT t FROM TransacoesConta t WHERE t.date BETWEEN :inicio and :termino")
+    public List<TransacoesConta> findByPeriod(LocalDate inicio, LocalDate termino);
 	
 	
 	/*

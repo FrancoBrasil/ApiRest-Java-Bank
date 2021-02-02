@@ -1,19 +1,21 @@
 package com.orion.bank.controller.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.orion.bank.model.TransacoesConta;
 
 public class TransacoesContaDTO {
 	
 	private Long id;
-	private LocalDateTime data;
+	private LocalDate date;
 	private String tipo;
 	private Double valor;
 	
 	public TransacoesContaDTO(TransacoesConta transacoes) {
 		id = transacoes.getId();
-		data = transacoes.getData();
+		date = transacoes.getDate();
 		tipo = transacoes.getTipo();
 		valor = transacoes.getValor();
 	}
@@ -26,12 +28,12 @@ public class TransacoesContaDTO {
 		this.id = id;
 	}
 
-	public LocalDateTime getData() {
-		return data;
+	public LocalDate getDate() {
+		return date;
 	}
 
-	public void setData(LocalDateTime data) {
-		this.data = data;
+	public void setData(LocalDate date) {
+		this.date = date;
 	}
 
 	public String getTipo() {
@@ -48,6 +50,10 @@ public class TransacoesContaDTO {
 
 	public void setValor(Double valor) {
 		this.valor = valor;
+	}
+
+	public static List<TransacoesContaDTO> converter(List<TransacoesConta> extrato) {
+		return extrato.stream().map(TransacoesContaDTO::new).collect(Collectors.toList());
 	}
 		
 }
